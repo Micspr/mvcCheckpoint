@@ -43,4 +43,22 @@ const update = (updateInterface) => {
     res.status(200).json(interfaces[interface])
 }
 
-const remove = 
+const remove = (updateInterface) => {
+    if(!updateInterface.interfacesId && !updateInterface.name)
+        return res.status(400).json('Please include a name or ID to update.')
+    
+    const interface = interfaces.findIndex(ele => ele.id === updateInterface.interfacesId) || interfaces.findIndex(ele => ele.name === updateInterface.name)
+    if(interface === -1)
+        return res.status(404).json('Could not find a matching Interface.')
+
+    const result = interfaces.splice(interface, 1)
+
+    res.status(200).json(result)
+}
+
+module.exports = 
+    getAll,
+    getOne,
+    create,
+    update,
+    remove;
