@@ -1,7 +1,7 @@
 const interfaces = [
     {id: '0', name: 'Leap Motion', type: 'finger tracking', cost: '80.00'},
     {id: '1', name: 'Emotiv', type: 'EEG brain waves', cost: '800.00'},
-    {id: '2', name: 'Tap', type: 'Single hand wearable chord keyboard', cost: '180.00'},
+    {id: '2', name: 'Tap', type: 'wearable chord keyboard', cost: '180.00'},
     {id: '3', name: 'Myo', type: 'EMG muscle tracking', cost: '200.00 DISCONTINUED'}]
 
 const getAll = (limit) => limit ? interfaces.slice(0, limit) : interfaces
@@ -18,6 +18,11 @@ const getOne = (id) => {
 const create = (newInterface) => {
     if(!newInterface.interfacesId || !newInterface.name)
         return res.status(400).json('Please include a name and ID with your request.')
+
+    const foundId = interfaces.findIndex(ele => ele.id === newInterface.interfacesId)
+
+    if(foundId !== -1)
+        return res.status(400).json(`Item with that ID already exists. Next available ID is ${interfaces.length}.`)
     
     interfaces.push(
         {id: newInterface.interfacesId, 
@@ -39,7 +44,7 @@ const update = (updateInterface) => {
         id: updateInterface.interfacesId || interfaces[interface].id,
         name: updateInterface.name || interfaces[interface].name,
         type: updateInterface.type || interfaces[interface].type,
-        cost: updateInterface.cost || interfaces[interface].cost}\
+        cost: updateInterface.cost || interfaces[interface].cost}
     res.status(200).json(interfaces[interface])
 }
 
