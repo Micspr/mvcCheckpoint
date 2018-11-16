@@ -5,13 +5,14 @@ const cors = require('cors')
 const app = express()
 app.use(cors())
 app.use(morgan('dev'))
+app.disable('x-powered-by')
 app.use(bodyParse.json())
 
 app.use('/interfaces', require('./routes/interfaces'))
 
-app.use(defaultRoute = (req, res, next) => next({status: 404, message: 'Route not found.'}))
+app.use((req, res, next) => next({status: 404, message: 'Route not found.'}))
 
-app.use(errorHandler = (req, res, next) => {
+app.use((err, req, res, next) => {
     const errorMessage = {}
 
     if(process.env.NODE_ENV !== 'production' && err.stack)
@@ -26,6 +27,6 @@ app.use(errorHandler = (req, res, next) => {
 
 const port = process.env.PORT || 3000
 
-app.listen(port, portListener = () => {
+app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
