@@ -6,7 +6,7 @@ const interfaces = [
 
 const getAll = (limit) => limit ? interfaces.slice(0, limit) : interfaces
 
-const getOne = () => {
+const getOne = (id) => {
     const interface = interfaces.findIndex(ele => ele.id === id)
 
     if(interface === -1)
@@ -16,7 +16,7 @@ const getOne = () => {
 }
 
 const create = (newInterface) => {
-    if(!newInterface.id || !newInterface.name)
+    if(!newInterface.id)
         return null
 
     const foundId = interfaces.findIndex(ele => ele.id === newInterface.id)
@@ -26,38 +26,38 @@ const create = (newInterface) => {
     
     interfaces.push(
         {id: newInterface.id, 
-        name: newInterface.name,
+        name: newInterface.name || 'Undefined',
         type: newInterface.type || 'Not specified.',
         cost: newInterface.cost || 'Unknown'})
     
     return interfaces[interfaces.length-1]
 }
 
-const update = (updateInterface) => {
-    if(!updateInterface.id && !updateInterface.name)
+const update = (updateInterface, body) => {
+    if(!updateInterface)
         return null
     
-    const interface = interfaces.findIndex(ele => ele.id === updateInterface.id) || interfaces.findIndex(ele => ele.name === updateInterface.name)
+    const interface = interfaces.findIndex(ele => ele.id === updateInterface)
 
     if(interface === -1)
         return -1
 
     interfaces[interface] = {
-        id: updateInterface.id || interfaces[interface].id,
-        name: updateInterface.name || interfaces[interface].name,
-        type: updateInterface.type || interfaces[interface].type,
-        cost: updateInterface.cost || interfaces[interface].cost}
+        id: updateInterface,
+        name: body.name || interfaces[interface].name,
+        type: body.type || interfaces[interface].type,
+        cost: body.cost || interfaces[interface].cost}
 
     return interfaces[interface]
 }
 
-const remove = (updateInterface) => {
-    if(!updateInterface.id && !updateInterface.name)
+const remove = (removeInterface) => {
+    if(!removeInterface)
         return null
     
-    const interface = interfaces.findIndex(ele => ele.id === updateInterface.id) || interfaces.findIndex(ele => ele.name === updateInterface.name)
+    const interface = interfaces.findIndex(ele => ele.id === removeInterface)
     if(interface === -1)
-        return res.status(404).json('Could not find a matching Interface.')
+        return -1
 
     const result = interfaces.splice(interface, 1)
 

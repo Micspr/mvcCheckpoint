@@ -10,10 +10,6 @@ router.post('/', interfacesController.create)
 
 router.put('/:id', interfacesController.update)
 
-router.put('/:name', interfacesController.update)
-
 router.delete('/:id', interfacesController.remove)
-
-router.delete('/:name', interfacesController.remove)
 
 module.exports = router;
