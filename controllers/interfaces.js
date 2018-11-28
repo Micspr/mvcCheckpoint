@@ -43,7 +43,7 @@ const remove = (req, res, next) => {
     const data = model.remove(req.params.id)
 
     if(data === null) 
-        return res.status(404).json({data: {error: 'Please provide a valid ID.'}})
+        return res.status(400).json({data: {error: 'Please provide a valid ID.'}})
 
     if(data === -1) 
         return res.status(404).json({data: {error: 'Could not find a matching interface to remove.'}})
